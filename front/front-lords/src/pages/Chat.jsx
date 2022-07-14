@@ -35,7 +35,7 @@ const Message = React.forwardRef(({ message, user, isMe, date }, ref) => {
 
 function Chat() {
   const [message, setMessage] = useState("");
-  const { room } = useParams()
+  const { room } = useParams();
 
   const { sendMessage, messages, user } = useContext(context);
 
@@ -52,7 +52,7 @@ function Chat() {
           .filter((message) => message.room === room)
           .map((message, index) =>
             message.type === "newUser" ? (
-              <Joined user={message.user} />
+              <Joined user={message.user} key={message.id} />
             ) : (
               <Message
                 key={message.id}
@@ -69,7 +69,7 @@ function Chat() {
         className="p-3 border-t-2"
         onSubmit={(e) => {
           e.preventDefault();
-          sendMessage(message);
+          sendMessage(message, room);
           setMessage("");
         }}
       >
