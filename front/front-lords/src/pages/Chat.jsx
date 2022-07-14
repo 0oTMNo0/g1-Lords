@@ -35,7 +35,7 @@ const Message = React.forwardRef(({ message, user, isMe, date }, ref) => {
 
 function Chat() {
   const [message, setMessage] = useState("");
-  const { room } = useParams;
+  const { room } = useParams()
 
   const { sendMessage, messages, user } = useContext(context);
 
