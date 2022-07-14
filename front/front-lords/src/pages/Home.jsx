@@ -20,7 +20,7 @@ function Home() {
           onSubmit={(e) => {
             e.preventDefault();
             joinRoom(roomInput, userNameInput);
-            navigate("./chat");
+            navigate("./chat/" + roomInput);
           }}
         >
           <div className="mb-6 mt-28">
