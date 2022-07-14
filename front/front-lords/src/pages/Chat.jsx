@@ -53,6 +53,7 @@ function Chat() {
           .map((message, index) =>
             message.type === "newUser" ? (
               <Joined user={message.user} key={message.id} />
+
             ) : (
               <Message
                 key={message.id}
