@@ -1,46 +1,65 @@
 import React from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 import { useContext } from "react";
 import { context } from "../context/context";
 
-function Message({ message, user, isMe, date }) {
+function Joined({ user }) {
+  return (
+    <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-300 text-blue-500 text-xs text-center self-center">
+      {user} joined the chat
+    </div>
+  );
+}
+
+const Message = React.forwardRef(({ message, user, isMe, date }, ref) => {
   const className = isMe
     ? "flex flex-col w-2/3 shadow-lg rounded bg-slate-600 text-white text-xs self-start"
     : "flex flex-col w-2/3 shadow-lg rounded bg-slate-400 text-white text-xs self-end";
 
   return (
-    <div className={className}>
+    <div className={className} ref={ref}>
       <div className="border-b-2 p-3">
         <p>{user}</p>
         <p>{date}</p>
       </div>
       <div className="p-3">
-        <p>{message}</p>
+        <pre>{message}</pre>
       </div>
     </div>
   );
-}
+});
 
 function Chat() {
   const [message, setMessage] = useState("");
 
   const { sendMessage, messages, user } = useContext(context);
 
-  console.log("messages", messages);
+  const lastRef = useRef();
+
+  useEffect(() => {
+    if (lastRef.current) lastRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="flex flex-col">
       <div className="overflow-y-scroll h-96 flex flex-col p-4 gap-3 no-scrollbar">
-        {messages.map((message) => (
-          <Message
-            key={message.id}
-            message={message.message}
-            user={message.user}
-            isMe={message.user === user}
-            date={message.date}
-          />
-        ))}
+        {messages.map((message, index) =>
+          message.type === "newUser" ? (
+            <Joined user={message.user} />
+          ) : (
+            <Message
+              key={message.id}
+              message={message.message}
+              user={message.user}
+              isMe={message.user === user}
+              date={message.date}
+              ref={index === messages.length - 1 ? lastRef : null}
+            />
+          )
+        )}
       </div>
       <form
         className="p-3 border-t-2"
