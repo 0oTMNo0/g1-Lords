@@ -15,7 +15,6 @@ export default function ChatProvider(props) {
   useEffect(() => {
     socket.on("connect", () => {
       setIsConnected(true);
-      joinRoom(room, user);
     });
 
     socket.on("disconnect", () => {
@@ -39,7 +38,7 @@ export default function ChatProvider(props) {
   }, []);
 
   const joinRoom = (room, name) => {
-    socket.emit("join", { room, name });
+    socket.emit("join", { room, user: name });
     setRoom(room);
     setUser(name);
   };
