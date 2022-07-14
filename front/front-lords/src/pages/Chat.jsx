@@ -52,7 +52,7 @@ function Chat() {
           .filter((message) => message.room === room)
           .map((message, index) =>
             message.type === "newUser" ? (
-              <Joined user={message.user} />
+              <Joined user={message.user} key={message.id} />
             ) : (
               <Message
                 key={message.id}
