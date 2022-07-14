@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import io from "socket.io-client";
 
 const socket = io();
 
-const context = React.createContext();
+export const context = React.createContext();
 
 export default function ChatProvider(props) {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -15,6 +15,7 @@ export default function ChatProvider(props) {
   useEffect(() => {
     socket.on("connect", () => {
       setIsConnected(true);
+      joinRoom(room, user);
     });
 
     socket.on("disconnect", () => {
@@ -22,11 +23,11 @@ export default function ChatProvider(props) {
     });
 
     socket.on("newMessage", (message) => {
-      setMessages([...messages, message]);
+      setMessages((messages) => [...messages, message]);
     });
 
     socket.on("newUser", (user) => {
-      setMessages([...messages, user]);
+      setMessages((messages) => [...messages, user]);
     });
 
     return () => {

@@ -8,6 +8,11 @@ app.use(cors());
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 
+let id = 0;
+function idGenerator() {
+  return id++;
+}
+
 io.on("connection", (socket) => {
   console.log("a user connected");
   socket.on("disconnect", () => {
@@ -16,14 +21,24 @@ io.on("connection", (socket) => {
   socket.on("join", (data) => {
     console.log(data);
     socket.join(data.room);
-    socket.broadcast.to(data.room).emit("newUser", data);
+    socket.broadcast.to(data.room).emit("newUser", {
+      ...data,
+      type: "newUser",
+      date: new Date().toLocaleString(),
+      id: idGenerator(),
+    });
   });
   socket.on("sendMessage", (data) => {
     console.log(data);
-    socket.broadcast.to(data.room).emit("newMessage", data);
+    io.to(data.room).emit("newMessage", {
+      ...data,
+      type: "newMessage",
+      date: new Date().toLocaleString(),
+      id: idGenerator(),
+    });
   });
 });
 
-server.listen(5000, () => {
-  console.log("Server listening at port 5000");
+server.listen(5050, () => {
+  console.log("Server listening at port 5050");
 });
