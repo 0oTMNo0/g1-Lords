@@ -4,6 +4,13 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors());
+app.use(express.json());
+
+const rooms = [];
+
+app.get("/rooms", function (req, res) {
+  res.send(rooms);
+});
 
 const server = http.createServer(app);
 const io = require("socket.io")(server);
@@ -21,6 +28,12 @@ io.on("connection", (socket) => {
   socket.on("join", (data) => {
     console.log(data);
     socket.join(data.room);
+
+    if (!rooms.includes(data.room)) {
+      rooms.push(data.room);
+      io.emit("newRoom", data.room);
+    }
+
     socket.broadcast.to(data.room).emit("newUser", {
       ...data,
       type: "newUser",
