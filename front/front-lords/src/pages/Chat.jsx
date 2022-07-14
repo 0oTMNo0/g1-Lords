@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useContext } from "react";
+import { useParams } from "react-router-dom";
 import { context } from "../context/context";
 
 function Joined({ user }) {
@@ -34,6 +35,7 @@ const Message = React.forwardRef(({ message, user, isMe, date }, ref) => {
 
 function Chat() {
   const [message, setMessage] = useState("");
+  const { room } = useParams();
 
   const { sendMessage, messages, user } = useContext(context);
 
@@ -46,26 +48,28 @@ function Chat() {
   return (
     <div className="flex flex-col">
       <div className="overflow-y-scroll h-96 flex flex-col p-4 gap-3 no-scrollbar">
-        {messages.map((message, index) =>
-          message.type === "newUser" ? (
-            <Joined user={message.user} />
-          ) : (
-            <Message
-              key={message.id}
-              message={message.message}
-              user={message.user}
-              isMe={message.user === user}
-              date={message.date}
-              ref={index === messages.length - 1 ? lastRef : null}
-            />
-          )
-        )}
+        {messages
+          .filter((message) => message.room === room)
+          .map((message, index) =>
+            message.type === "newUser" ? (
+              <Joined user={message.user} />
+            ) : (
+              <Message
+                key={message.id}
+                message={message.message}
+                user={message.user}
+                isMe={message.user === user}
+                date={message.date}
+                ref={index === messages.length - 1 ? lastRef : null}
+              />
+            )
+          )}
       </div>
       <form
         className="p-3 border-t-2"
         onSubmit={(e) => {
           e.preventDefault();
-          sendMessage(message);
+          sendMessage(message, room);
           setMessage("");
         }}
       >
