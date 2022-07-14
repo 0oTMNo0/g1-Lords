@@ -3,11 +3,11 @@ import React from 'react'
 function Chat() {
   return (
     <div className="flex flex-col">
-        <div className="overflow-y-scroll h-96 flex flex-col p-4 gap-3">
+        <div className="overflow-y-scroll h-96 flex flex-col p-4 gap-3 no-scrollbar">
 
             {/* admin-msg */}
-            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-600 text-white text-xs">
-                <div className='border-b-2 items-start p-3'>
+            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-600 text-white text-xs self-start">
+                <div className='border-b-2 p-3'>
                     <p>name</p>
                     <p>date</p>
                 </div>
@@ -19,8 +19,8 @@ function Chat() {
 
 
             {/* user-msg */}
-            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-400 text-white text-xs">
-                <div className='border-b-2 items-start p-3'>
+            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-400 text-white text-xs self-end">
+                <div className='border-b-2 p-3'>
                     <p>name</p>
                     <p>date</p>
                 </div>
@@ -28,6 +28,46 @@ function Chat() {
                     <p>msg</p>
                 </div>
             </div>
+
+
+            {/* user-msg */}
+            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-400 text-white text-xs self-end">
+                <div className='border-b-2 p-3'>
+                    <p>name</p>
+                    <p>date</p>
+                </div>
+                <div className='p-3'>
+                    <p>msg</p>
+                </div>
+            </div>
+
+
+            {/* user-msg */}
+            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-400 text-white text-xs self-end">
+                <div className='border-b-2 p-3'>
+                    <p>name</p>
+                    <p>date</p>
+                </div>
+                <div className='p-3'>
+                    <p>msg</p>
+                </div>
+            </div>
+
+
+            {/* user-msg */}
+            <div className="flex flex-col w-2/3 shadow-lg rounded bg-slate-400 text-white text-xs self-end">
+                <div className='border-b-2 p-3'>
+                    <p>name</p>
+                    <p>date</p>
+                </div>
+                <div className='p-3'>
+                    <p>msg</p>
+                </div>
+            </div>
+
+
+
+
 
         </div>
         <form className="p-3 border-t-2" onSubmit={(e)=>{
